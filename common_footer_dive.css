@@ -1,0 +1,78 @@
+@charset "utf-8";
+
+.footer__ {position: relative; z-index: 10; background: white; border-top:3px solid #707070;font-family:'Noto Sans KR', 'Malgun Gothic', '맑은 고딕', Helvetica, Arial, sans-serif; padding-bottom: 0px; font-size: 14px; text-align: left; letter-spacing: -0.02rem;}
+.footer__ span {display:block;}
+.footer__ a{text-decoration: none; color:#000000;}
+
+/* 기업정보 */
+/* 24.09.23 이수민 margin 추가 */
+.footer__ .corp-info__ {position:relative; text-align:center; margin: 0 auto;}
+/* 24.09.23 이수민 margin 추가 */
+.footer__ .corp-info__ address {display: inline-block; margin:40px auto; text-align: left; font-style:normal; font-size:14px; line-height:24px; letter-spacing:-.5px; color:#1a1a1a;}
+.footer__ .corp-info__ address span {display:inline-block; margin-right:20px;}
+.footer__ .corp-info__ address p {margin-top:10px;}
+.footer__ .corp-info__ address p strong {font-weight:550;}
+/* 패밀리 사이트 드롭다운 */
+.family-link-wrap__ {position:absolute; top:0; right:0; width:172px; margin:0 auto; padding:0;}
+.family-link-wrap__ strong {margin:0; font-size:14px; font-weight:400;}
+.family-link-wrap__ .family-link-area__ {padding:14px 15px 15px; cursor:pointer; border-bottom:2px solid #666; color:#1a1a1a; background-color:#fff; text-align: center;}
+.family-link-list__, 
+.family-link-wrap__:hover .family-link-list__ {overflow:hidden; height:0; -webkit-transition:height .25s; -o-transition:height .25s; transition:height .25s;}
+.family-link-wrap__:hover .family-link-area__:hover .family-link-list__ {height:160px; bottom:2px; border:1px solid #666; border-bottom:0;}
+.family-link-list__ {position:absolute; left:0; bottom:47px; width:140px; padding:0 15px; background:#fff;}
+.family-link-list__ .inner__ {overflow-y:auto; width:142px; height:240px; padding-left: 0;}
+.family-link-list__ .inner__ li {margin-bottom:3px; font-size:12px; font-weight:400; line-height:24px; letter-spacing:-.05em; color:#666;}
+.family-link-list__ .inner__ li:first-child {padding-top:14px;}
+.family-link-list__ .inner__ li:last-child {padding-bottom:30px;}
+.family-link-list__::after {content:''; display:block; position:absolute; bottom:0; left:0; width:142px; margin:0 15px;}
+/* 푸터 기타메뉴 */
+.footer__ .btm-link__ {display:block; padding:20px 0; background-color:#dedede;}
+.footer__ .btm-link__ .btm-link-inner__ {position:relative; text-align: center; }
+.footer__ .btm-link__ a {display:inline-block;padding-right: 8px; }
+.footer__ .btm-link__ a span {display:inline-block; margin-right:10px;}
+.footer__ .btm-link__ a::after {content:' '; display:inline-block; width:1px; height:10px; border-right:1px solid #aaa;}
+.footer__ .btm-link__ a:last-child::after {border-right:0;}
+
+@media all and (max-width : 500px){
+    .footer__ .corp-info__{
+        width: 90%;
+    }
+    .family-link-wrap__{
+        display: none;
+        position: unset;
+        padding-bottom: 47px;
+        margin-top: -23px;
+    }
+    .footer__ .corp-info__ address{
+        font-size: 12px;
+    }
+    .family-link-area__{
+        position: relative;
+        text-align: center;
+    }
+    .footer__ .btm-link__{
+        display: none;
+    }
+    .footer__ .btm-link__ .btm-link-inner__{
+        width: 90%;
+        font-size: 12px;
+    }
+    .footer__ .btm-link__ a{
+        padding-bottom: 5px
+    }
+    .family-link-wrap__:hover .family-link-area__:hover .family-link-list__{
+        height: 110px;
+    }
+}
+
+@media all and (min-width : 880px) and (max-width : 1178px){
+    .footer__ .corp-info__{
+        width: 817px;
+    }
+    .footer__ .btm-link__ .btm-link-inner__{
+        width: 828px;
+    }
+    .footer__ .btm-link__ a{
+        font-size: 12px;
+    }
+}
