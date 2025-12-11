@@ -7,5 +7,5 @@ document.addEventListener('DOMContentLoaded', () => {
       regionNames.push(name);
     }
   });
-  console.log('추출된 지역명:', regionNames);
+  console.log(JSON.stringify(regionNames));
 });
