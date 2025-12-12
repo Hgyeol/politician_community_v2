@@ -1243,7 +1243,7 @@ body,p,tr {
 #app {
     text-align: center;
     width: 100%;
-    overflow: hidden
+    overflow: visible
 }
 
 .container {
@@ -1902,7 +1902,7 @@ body,p,tr {
     padding: 30px 0 0 0;
     height: calc(100vh - 220px);
     height: 82vh;
-    overflow: hidden;
+    overflow: visible;
     padding-top: 5vh
 }
 
