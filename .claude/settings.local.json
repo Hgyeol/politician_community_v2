@@ -2,7 +2,9 @@
   "permissions": {
     "allow": [
       "Bash(python3 -c \"import pandas as pd; df = pd.read_excel(''/Users/gimhangyeol/politican_community/의원검색.xlsx''); print(''Columns:'', df.columns.tolist()); print(''\\n지역명 unique values:''); print(df[''지역명''].unique() if ''지역명'' in df.columns else ''No 지역명 column found''); print(''\\nFirst few rows:''); print(df.head())\")",
-      "Bash(python3:*)"
+      "Bash(python3:*)",
+      "Bash(source .venv/bin/activate)",
+      "Bash(python check_image_quality.py:*)"
     ]
   }
 }
