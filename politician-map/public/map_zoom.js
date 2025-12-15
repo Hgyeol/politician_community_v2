@@ -44,5 +44,12 @@ document.addEventListener('DOMContentLoaded', function() {
         d3.select(this)
             .style("stroke", "yellow")
             .style("stroke-width", "2");
+
+        // Trigger custom modal event
+        const regionName = this.getAttribute('name');
+        console.log('🗺️ [map_zoom.js] Region clicked:', regionName);
+        if (regionName && window.openPoliticianModal) {
+            window.openPoliticianModal(regionName);
+        }
     });
 });
