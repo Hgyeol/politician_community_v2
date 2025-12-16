@@ -94,13 +94,13 @@ function closeModal() {
 .panel-container {
   position: fixed;
   right: 0;
-  top: 0;
+  top: 64px;
   width: 400px;
-  height: 100vh;
+  height: calc(100vh - 64px);
   background: white;
-  border-left: 1px solid #e2e8f0;
+  border-left: 1px solid #e5e7eb;
   overflow-y: auto;
-  box-shadow: -4px 0 12px rgba(0, 0, 0, 0.1);
+  box-shadow: -2px 0 8px rgba(0, 0, 0, 0.04);
   z-index: 1000;
 }
 
@@ -111,8 +111,8 @@ function closeModal() {
   width: 40px;
   height: 40px;
   border: none;
-  background: rgba(0, 0, 0, 0.1);
-  border-radius: 50%;
+  background: #f3f4f6;
+  border-radius: 8px;
   font-size: 24px;
   cursor: pointer;
   display: flex;
@@ -120,11 +120,12 @@ function closeModal() {
   justify-content: center;
   transition: all 0.2s;
   z-index: 1;
+  color: #6b7280;
 }
 
 .panel-close:hover {
-  background: rgba(0, 0, 0, 0.2);
-  transform: scale(1.1);
+  background: #e5e7eb;
+  color: #111827;
 }
 
 .panel-content {
@@ -135,9 +136,10 @@ function closeModal() {
   width: 200px;
   height: 240px;
   margin: 0 auto 30px;
-  border-radius: 12px;
+  border-radius: 8px;
   overflow: hidden;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  border: 1px solid #e5e7eb;
 }
 
 .politician-image img {
@@ -149,11 +151,11 @@ function closeModal() {
 .no-image {
   width: 100%;
   height: 100%;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: #e5e7eb;
   display: flex;
   align-items: center;
   justify-content: center;
-  color: white;
+  color: #6b7280;
   font-size: 16px;
   font-weight: 500;
 }
@@ -163,7 +165,7 @@ function closeModal() {
   font-weight: 700;
   margin-bottom: 24px;
   text-align: center;
-  color: #1a202c;
+  color: #111827;
 }
 
 .info-row {

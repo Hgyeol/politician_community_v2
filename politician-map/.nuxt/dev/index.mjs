@@ -647,7 +647,39 @@ const _inlineRuntimeConfig = {
       }
     }
   },
-  "public": {}
+  "public": {
+    "supabaseUrl": "https://eylccqdtjyxnhpnnerff.supabase.co",
+    "supabaseKey": "sb_secret_mNkhN 0XHn0WT0hZey2-TYw_gSbnHpE7",
+    "supabase": {
+      "url": "https://eylccqdtjyxnhpnnerff.supabase.co",
+      "key": "sb_secret_mNkhN 0XHn0WT0hZey2-TYw_gSbnHpE7",
+      "redirect": false,
+      "redirectOptions": {
+        "login": "/auth/login",
+        "callback": "/auth/callback",
+        "exclude": [
+          "/",
+          "/suggestions",
+          "/suggestions/*"
+        ],
+        "cookieRedirect": false,
+        "saveRedirectToCookie": false
+      },
+      "cookieName": "sb",
+      "cookiePrefix": "sb-eylccqdtjyxnhpnnerff-auth-token",
+      "useSsrCookies": true,
+      "cookieOptions": {
+        "maxAge": 28800,
+        "sameSite": "lax",
+        "secure": true
+      },
+      "clientOptions": {}
+    }
+  },
+  "supabase": {
+    "serviceKey": "",
+    "secretKey": ""
+  }
 };
 const envOptions = {
   prefix: "NITRO_",
@@ -1364,7 +1396,7 @@ const _ZAXbR9WgGHUmMzAt_wW0gEtFhjE3cf6g7kDDhxCceXo = (function(nitro) {
 
 const rootDir = "/Users/gimhangyeol/politican_community/politician_community_front/politician-map";
 
-const appHead = {"meta":[{"charset":"utf-8"},{"name":"viewport","content":"width=device-width, initial-scale=1"},{"name":"description","content":"지난 대선과 이번 총선의 민심은 어떻게 달라졌을까요? 네가지 지도를 통해 살펴보는 제22대 국회의원 선거 결과를 살펴보실 수 있습니다."}],"link":[{"rel":"stylesheet","href":"/app.css"},{"rel":"stylesheet","href":"https://fonts.googleapis.com/earlyaccess/notosanskr.css"}],"style":[],"script":[{"src":"https://www.khan.co.kr/spko/js/plugin/jquery-1.11.3.min.js","type":"text/javascript","tagPosition":"bodyClose"},{"src":"https://cdnjs.cloudflare.com/ajax/libs/d3/5.16.0/d3.min.js","type":"text/javascript","tagPosition":"bodyClose"},{"src":"/map_zoom.js","defer":true,"tagPosition":"bodyClose"},{"src":"/count.js","defer":true,"tagPosition":"bodyClose"}],"noscript":[],"title":"제22대 국회의원 선거 결과"};
+const appHead = {"meta":[{"charset":"utf-8"},{"name":"viewport","content":"width=device-width, initial-scale=1"},{"name":"description","content":"지역 정치인에게 직접 건의사항을 작성하고 공유하는 시민 참여형 플랫폼"}],"link":[{"rel":"stylesheet","href":"/app.css"},{"rel":"stylesheet","href":"https://fonts.googleapis.com/earlyaccess/notosanskr.css"}],"style":[],"script":[{"src":"https://www.khan.co.kr/spko/js/plugin/jquery-1.11.3.min.js","type":"text/javascript","tagPosition":"bodyClose"},{"src":"https://cdnjs.cloudflare.com/ajax/libs/d3/5.16.0/d3.min.js","type":"text/javascript","tagPosition":"bodyClose"},{"src":"/map_zoom.js","defer":true,"tagPosition":"bodyClose"},{"src":"/count.js","defer":true,"tagPosition":"bodyClose"}],"noscript":[],"title":"정치인 커뮤니티 - 건의사항 게시판"};
 
 const appRootTag = "div";
 

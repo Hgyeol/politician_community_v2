@@ -3,13 +3,27 @@ export default defineNuxtConfig({
 
   compatibilityDate: '2024-12-15',
 
+  modules: [
+    '@nuxtjs/supabase',
+    '@nuxtjs/tailwindcss'
+  ],
+
+  supabase: {
+    redirect: false, // 자동 리다이렉트 비활성화 (수동으로 처리)
+    redirectOptions: {
+      login: '/auth/login',
+      callback: '/auth/callback',
+      exclude: ['/', '/suggestions', '/suggestions/*']
+    }
+  },
+
   app: {
     head: {
-      title: '제22대 국회의원 선거 결과',
+      title: '정치인 커뮤니티 - 건의사항 게시판',
       meta: [
         { charset: 'utf-8' },
         { name: 'viewport', content: 'width=device-width, initial-scale=1' },
-        { name: 'description', content: '지난 대선과 이번 총선의 민심은 어떻게 달라졌을까요? 네가지 지도를 통해 살펴보는 제22대 국회의원 선거 결과를 살펴보실 수 있습니다.' }
+        { name: 'description', content: '지역 정치인에게 직접 건의사항을 작성하고 공유하는 시민 참여형 플랫폼' }
       ],
       link: [
         { rel: 'stylesheet', href: '/app.css' },
@@ -27,5 +41,13 @@ export default defineNuxtConfig({
   // D3.js가 클라이언트 사이드에서만 동작하도록
   build: {
     transpile: ['d3']
+  },
+
+  // 환경변수 런타임에서 사용 가능하도록
+  runtimeConfig: {
+    public: {
+      supabaseUrl: process.env.SUPABASE_URL,
+      supabaseKey: process.env.SUPABASE_KEY
+    }
   }
 })
