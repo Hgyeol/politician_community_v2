@@ -1,0 +1,92 @@
+import { u as useSupabaseClient } from './useSupabaseClient-H06rCZGb.mjs';
+import { f as useSupabaseUser, n as navigateTo } from './server.mjs';
+import { computed } from 'vue';
+
+function useAuth() {
+  const supabase = useSupabaseClient();
+  const user = useSupabaseUser();
+  const signUp = async (email, password, nickname, region = "") => {
+    try {
+      console.log("🔧 useAuth.signUp() 호출:", { email, nickname, region });
+      const { data, error } = await supabase.auth.signUp({
+        email,
+        password,
+        options: {
+          data: {
+            nickname,
+            region
+          }
+        }
+      });
+      console.log("🔧 Supabase signUp 결과:", { data, error });
+      if (error) throw error;
+      return { data, error: null };
+    } catch (error) {
+      console.error("❌ Sign up error:", error);
+      return { data: null, error: error.message };
+    }
+  };
+  const signIn = async (email, password) => {
+    try {
+      console.log("🔧 useAuth.signIn() 호출:", { email });
+      const { data, error } = await supabase.auth.signInWithPassword({
+        email,
+        password
+      });
+      console.log("🔧 Supabase signInWithPassword 결과:", {
+        user: data?.user?.email,
+        session: !!data?.session,
+        error
+      });
+      if (error) throw error;
+      return { data, error: null };
+    } catch (error) {
+      console.error("❌ Sign in error:", error);
+      return { data: null, error: error.message };
+    }
+  };
+  const signOut = async () => {
+    try {
+      const { error } = await supabase.auth.signOut();
+      if (error) throw error;
+      await navigateTo("/");
+      return { error: null };
+    } catch (error) {
+      console.error("Sign out error:", error);
+      return { error: error.message };
+    }
+  };
+  const getProfile = async (userId) => {
+    try {
+      const { data, error } = await supabase.from("profiles").select("*").eq("id", userId).single();
+      if (error) throw error;
+      return { data, error: null };
+    } catch (error) {
+      console.error("Get profile error:", error);
+      return { data: null, error: error.message };
+    }
+  };
+  const updateProfile = async (userId, updates) => {
+    try {
+      const { data, error } = await supabase.from("profiles").update(updates).eq("id", userId).select().single();
+      if (error) throw error;
+      return { data, error: null };
+    } catch (error) {
+      console.error("Update profile error:", error);
+      return { data: null, error: error.message };
+    }
+  };
+  const isAuthenticated = computed(() => !!user.value);
+  return {
+    user,
+    signUp,
+    signIn,
+    signOut,
+    getProfile,
+    updateProfile,
+    isAuthenticated
+  };
+}
+
+export { useAuth as u };
+//# sourceMappingURL=useAuth-D5BgWjNS.mjs.map

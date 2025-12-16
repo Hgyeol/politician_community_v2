@@ -1,0 +1,117 @@
+import { _ as __nuxt_component_0 } from './nuxt-link-C26fPnf3.mjs';
+import { defineComponent, ref, mergeProps, unref, withCtx, createTextVNode, useSSRContext } from 'vue';
+import { ssrRenderAttrs, ssrInterpolate, ssrRenderClass, ssrRenderList, ssrRenderComponent } from 'vue/server-renderer';
+import { _ as _export_sfc, u as useRouter } from './server.mjs';
+import { u as useSupabaseClient } from './useSupabaseClient-H06rCZGb.mjs';
+import { u as useAuth } from './useAuth-D5BgWjNS.mjs';
+import '../nitro/nitro.mjs';
+import 'node:http';
+import 'node:https';
+import 'node:events';
+import 'node:buffer';
+import 'node:fs';
+import 'node:path';
+import 'node:crypto';
+import 'node:url';
+import '../routes/renderer.mjs';
+import 'vue-bundle-renderer/runtime';
+import 'unhead/server';
+import 'devalue';
+import 'unhead/utils';
+import 'vue-router';
+import '@supabase/ssr';
+
+const _sfc_main = /* @__PURE__ */ defineComponent({
+  __name: "profile",
+  __ssrInlineRender: true,
+  setup(__props) {
+    useRouter();
+    useSupabaseClient();
+    const { user } = useAuth();
+    const activeTab = ref("suggestions");
+    const loading = ref(true);
+    const mySuggestions = ref([]);
+    const myComments = ref([]);
+    function formatDate(dateString) {
+      if (!dateString) return "";
+      const date = new Date(dateString);
+      return date.toLocaleDateString("ko-KR", {
+        year: "numeric",
+        month: "long",
+        day: "numeric"
+      });
+    }
+    return (_ctx, _push, _parent, _attrs) => {
+      const _component_NuxtLink = __nuxt_component_0;
+      _push(`<div${ssrRenderAttrs(mergeProps({ class: "max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8" }, _attrs))} data-v-8c70e06b><div class="mb-8" data-v-8c70e06b><h1 class="text-3xl font-bold text-gray-900 mb-2" data-v-8c70e06b>마이페이지</h1><p class="text-gray-600" data-v-8c70e06b>내가 작성한 건의사항과 댓글을 확인하세요</p></div>`);
+      if (unref(user)) {
+        _push(`<div class="bg-white border border-gray-200 rounded-lg p-6 mb-8" data-v-8c70e06b><div class="flex items-center space-x-4" data-v-8c70e06b><div class="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center" data-v-8c70e06b><span class="text-2xl font-bold text-gray-800" data-v-8c70e06b>${ssrInterpolate(unref(user).email?.charAt(0).toUpperCase())}</span></div><div data-v-8c70e06b><h2 class="text-xl font-semibold text-gray-900" data-v-8c70e06b>${ssrInterpolate(unref(user).email)}</h2><p class="text-gray-600" data-v-8c70e06b>가입일: ${ssrInterpolate(formatDate(unref(user).created_at))}</p></div></div></div>`);
+      } else {
+        _push(`<!---->`);
+      }
+      _push(`<div class="border-b border-gray-200 mb-6" data-v-8c70e06b><nav class="flex space-x-8" data-v-8c70e06b><button class="${ssrRenderClass([
+        "pb-4 px-1 border-b-2 font-medium text-sm transition-colors",
+        activeTab.value === "suggestions" ? "border-gray-800 text-gray-800" : "border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300"
+      ])}" data-v-8c70e06b> 내 건의사항 (${ssrInterpolate(mySuggestions.value.length)}) </button><button class="${ssrRenderClass([
+        "pb-4 px-1 border-b-2 font-medium text-sm transition-colors",
+        activeTab.value === "comments" ? "border-gray-800 text-gray-800" : "border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300"
+      ])}" data-v-8c70e06b> 내 댓글 (${ssrInterpolate(myComments.value.length)}) </button></nav></div>`);
+      if (loading.value) {
+        _push(`<div class="text-center py-16" data-v-8c70e06b><div class="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-gray-800" data-v-8c70e06b></div></div>`);
+      } else if (activeTab.value === "suggestions") {
+        _push(`<div data-v-8c70e06b><div class="space-y-4" data-v-8c70e06b><!--[-->`);
+        ssrRenderList(mySuggestions.value, (suggestion) => {
+          _push(`<div class="bg-white border border-gray-200 rounded-lg p-6 hover:shadow-md transition-shadow cursor-pointer" data-v-8c70e06b><div class="flex justify-between items-start mb-3" data-v-8c70e06b><h2 class="text-xl font-semibold text-gray-900 flex-1" data-v-8c70e06b>${ssrInterpolate(suggestion.title)}</h2><span class="ml-4 px-3 py-1 bg-gray-50 text-gray-700 rounded-full text-sm font-medium" data-v-8c70e06b>${ssrInterpolate(suggestion.category)}</span></div><p class="text-gray-600 mb-4 line-clamp-2" data-v-8c70e06b>${ssrInterpolate(suggestion.content)}</p><div class="flex items-center justify-between text-sm text-gray-500" data-v-8c70e06b><div class="flex items-center space-x-4" data-v-8c70e06b><span class="font-medium text-gray-800" data-v-8c70e06b>${ssrInterpolate(suggestion.politicians?.name)}</span><span data-v-8c70e06b>(${ssrInterpolate(suggestion.politicians?.region)})</span></div><div class="flex items-center space-x-4" data-v-8c70e06b><span data-v-8c70e06b>조회 ${ssrInterpolate(suggestion.view_count || 0)}</span><span data-v-8c70e06b>${ssrInterpolate(formatDate(suggestion.created_at))}</span></div></div></div>`);
+        });
+        _push(`<!--]-->`);
+        if (mySuggestions.value.length === 0) {
+          _push(`<div class="text-center py-16" data-v-8c70e06b><p class="text-gray-500 text-lg mb-4" data-v-8c70e06b>작성한 건의사항이 없습니다</p>`);
+          _push(ssrRenderComponent(_component_NuxtLink, {
+            to: "/suggestions/new",
+            class: "inline-block px-6 py-3 bg-gray-800 text-white rounded-lg font-medium hover:bg-gray-900 transition-colors"
+          }, {
+            default: withCtx((_, _push2, _parent2, _scopeId) => {
+              if (_push2) {
+                _push2(` 건의사항 작성하기 `);
+              } else {
+                return [
+                  createTextVNode(" 건의사항 작성하기 ")
+                ];
+              }
+            }),
+            _: 1
+          }, _parent));
+          _push(`</div>`);
+        } else {
+          _push(`<!---->`);
+        }
+        _push(`</div></div>`);
+      } else if (activeTab.value === "comments") {
+        _push(`<div data-v-8c70e06b><div class="space-y-4" data-v-8c70e06b><!--[-->`);
+        ssrRenderList(myComments.value, (comment) => {
+          _push(`<div class="bg-white border border-gray-200 rounded-lg p-6 hover:shadow-md transition-shadow cursor-pointer" data-v-8c70e06b><div class="mb-3" data-v-8c70e06b><span class="text-sm text-gray-500" data-v-8c70e06b> 건의사항: <span class="font-medium text-gray-700" data-v-8c70e06b>${ssrInterpolate(comment.suggestions?.title || "제목 없음")}</span></span></div><p class="text-gray-800 mb-3" data-v-8c70e06b>${ssrInterpolate(comment.content)}</p><div class="text-sm text-gray-500" data-v-8c70e06b>${ssrInterpolate(formatDate(comment.created_at))}</div></div>`);
+        });
+        _push(`<!--]-->`);
+        if (myComments.value.length === 0) {
+          _push(`<div class="text-center py-16" data-v-8c70e06b><p class="text-gray-500 text-lg" data-v-8c70e06b>작성한 댓글이 없습니다</p></div>`);
+        } else {
+          _push(`<!---->`);
+        }
+        _push(`</div></div>`);
+      } else {
+        _push(`<!---->`);
+      }
+      _push(`</div>`);
+    };
+  }
+});
+const _sfc_setup = _sfc_main.setup;
+_sfc_main.setup = (props, ctx) => {
+  const ssrContext = useSSRContext();
+  (ssrContext.modules || (ssrContext.modules = /* @__PURE__ */ new Set())).add("pages/profile.vue");
+  return _sfc_setup ? _sfc_setup(props, ctx) : void 0;
+};
+const profile = /* @__PURE__ */ _export_sfc(_sfc_main, [["__scopeId", "data-v-8c70e06b"]]);
+
+export { profile as default };
+//# sourceMappingURL=profile-GvBrgzP_.mjs.map

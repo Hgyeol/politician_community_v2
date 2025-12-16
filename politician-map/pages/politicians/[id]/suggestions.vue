@@ -8,41 +8,55 @@
     <div v-else-if="politician">
       <!-- 정치인 정보 헤더 -->
       <div class="bg-white border border-gray-200 p-8 mb-8">
-        <div class="flex items-center justify-between">
-          <!-- Politician Image -->
-          <div class="flex-shrink-0 mx-auto mb-8 w-[200px] h-[240px] overflow-hidden border border-gray-200">
-            <img
-              v-if="!imageFailed"
-              :src="politicianImageSrc"
-              :alt="politician.의원명"
-              class="w-full h-full object-cover"
-              @error="handleImageError"
-            />
-            <div v-else class="w-full h-full bg-gray-200 flex items-center justify-center text-gray-500 text-sm">
-              사진 없음
+        <div class="flex items-start gap-8">
+          <!-- 왼쪽: 국회의원 사진과 정보 -->
+          <div class="flex-1 flex gap-6">
+            <!-- Politician Image -->
+            <div class="flex-shrink-0 w-[200px] h-[240px] overflow-hidden border border-gray-200">
+              <img
+                v-if="!imageFailed"
+                :src="politicianImageSrc"
+                :alt="politician.의원명"
+                class="w-full h-full object-cover"
+                @error="handleImageError"
+              />
+              <div v-else class="w-full h-full bg-gray-200 flex items-center justify-center text-gray-500 text-sm">
+                사진 없음
+              </div>
+            </div>
+
+            <!-- 국회의원 정보 -->
+            <div class="flex-1">
+              <h2 class="text-3xl font-bold text-gray-900 mb-6">{{ politician.의원명 }} 의원</h2>
+              <div class="space-y-2">
+                <div class="flex py-4">
+                  <span class="font-semibold text-gray-600 min-w-[100px] text-base">지역</span>
+                  <span class="flex-1 text-gray-800 text-base leading-relaxed">{{ politician.지역 }}</span>
+                </div>
+                <div class="flex py-4">
+                  <span class="font-semibold text-gray-600 min-w-[100px] text-base">정당</span>
+                  <span class="flex-1 text-gray-800 text-base leading-relaxed">{{ politician.정당 }}</span>
+                </div>
+                <div class="flex py-4">
+                  <span class="font-semibold text-gray-600 min-w-[100px] text-base">소속위원회</span>
+                  <span class="flex-1 text-gray-800 text-base leading-relaxed">{{ politician.소속위원회 }}</span>
+                </div>
+                <div class="flex py-4">
+                  <span class="font-semibold text-gray-600 min-w-[100px] text-base">당선</span>
+                  <span class="flex-1 text-gray-800 text-base leading-relaxed">{{ politician.당선횟수 }}<template v-if="politician.당선방법"> ({{ politician.당선방법 }})</template></span>
+                </div>
+              </div>
             </div>
           </div>
 
-          <div class="flex-1 pl-6">
-            <h2 class="text-3xl font-bold text-gray-900 mb-6">{{ politician.의원명 }} 의원</h2>
-            <div class="space-y-2">
-              <div class="flex py-4">
-                <span class="font-semibold text-gray-600 min-w-[100px] text-base">지역</span>
-                <span class="flex-1 text-gray-800 text-base leading-relaxed">{{ politician.지역 }}</span>
-              </div>
-              <div class="flex py-4">
-                <span class="font-semibold text-gray-600 min-w-[100px] text-base">정당</span>
-                <span class="flex-1 text-gray-800 text-base leading-relaxed">{{ politician.정당 }}</span>
-              </div>
-              <div class="flex py-4">
-                <span class="font-semibold text-gray-600 min-w-[100px] text-base">소속위원회</span>
-                <span class="flex-1 text-gray-800 text-base leading-relaxed">{{ politician.소속위원회 }}</span>
-              </div>
-              <div class="flex py-4">
-                <span class="font-semibold text-gray-600 min-w-[100px] text-base">당선</span>
-                <span class="flex-1 text-gray-800 text-base leading-relaxed">{{ politician.당선횟수 }}<template v-if="politician.당선방법"> ({{ politician.당선방법 }})</template></span>
-              </div>
-            </div>
+          <!-- 오른쪽: 정당 사진 -->
+          <div class="flex-shrink-0 w-[300px] h-[300px] flex items-center justify-center bg-white p-4">
+            <img
+              v-if="partyImageSrc"
+              :src="partyImageSrc"
+              :alt="politician.정당"
+              class="max-w-full max-h-full object-contain"
+            />
           </div>
         </div>
       </div>
@@ -132,7 +146,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, onUnmounted } from 'vue'
+import { ref, computed, onMounted, onUnmounted } from 'vue'
 
 
 const route = useRoute()
@@ -165,6 +179,24 @@ const handleImageError = () => {
     imageFailed.value = true; // All extensions tried, set to failed
   }
 };
+
+// 정당 이미지 매핑
+const partyImageSrc = computed(() => {
+  if (!politician.value || !politician.value.정당) return '';
+
+  const partyImageMap = {
+    '무소속': '/party_image/무소속.svg',
+    '민주당': '/party_image/민주당.svg',
+    '더불어민주당': '/party_image/민주당.svg',
+    '진보당': '/party_image/진보당.svg',
+    '개혁신당': '/party_image/개혁신당.png',
+    '국민의힘': '/party_image/국민의힘.png',
+    '새로운미래': '/party_image/새로운미래.png',
+    '조국혁신당': '/party_image/조국혁신당.png'
+  };
+
+  return partyImageMap[politician.value.정당] || '';
+});
 
 
 onMounted(async () => {
