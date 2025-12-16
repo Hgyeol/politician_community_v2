@@ -85,27 +85,23 @@
           댓글 {{ comments.length }}
         </h2>
 
-        <!-- 댓글 작성 -->
+
+
+        <!-- New Top-Level Comment Input -->
         <div v-if="isAuthenticated" class="mb-8">
-          <div v-if="replyingToCommentId" class="mb-2 p-3 bg-gray-100 rounded-lg flex justify-between items-center text-sm text-gray-700">
-            <span>{{ getCommentNickname(comments.find(c => c.id === replyingToCommentId)) }}님에게 답글 작성 중</span>
-            <button @click="cancelReply" class="text-red-500 hover:text-red-700 font-medium">
-              취소
-            </button>
-          </div>
           <textarea
             v-model="newComment"
             rows="3"
-            :placeholder="replyingToCommentId ? '답글을 작성하세요' : '댓글을 작성하세요'"
+            placeholder="새 댓글을 작성하세요"
             class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none mb-2"
           ></textarea>
           <div class="flex justify-end">
             <button
-              @click="handleCreateComment"
+              @click="handleCreateComment(null)"
               :disabled="!newComment.trim() || commentSubmitting"
               class="px-6 py-2 bg-gray-800 text-white rounded-lg font-medium hover:bg-gray-900 transition-colors disabled:bg-gray-400 disabled:cursor-not-allowed"
             >
-              {{ commentSubmitting ? '작성 중...' : (replyingToCommentId ? '답글 작성' : '댓글 작성') }}
+              댓글 작성
             </button>
           </div>
         </div>
@@ -182,6 +178,8 @@
                   </div>
                 </div>
                 <p v-else class="text-gray-700 whitespace-pre-wrap">{{ comment.content }}</p>
+
+
               </div>
 
               <!-- Replies -->
@@ -239,6 +237,56 @@
                   </div>
                   <p v-else class="text-gray-700 whitespace-pre-wrap">{{ reply.content }}</p>
                 </div>
+
+                <!-- Inline Reply Input (after all replies) -->
+                <div v-if="isAuthenticated && replyingToCommentId === comment.id" class="mt-4">
+                  <textarea
+                    v-model="newReplyContent"
+                    rows="3"
+                    placeholder="답글을 작성하세요"
+                    class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none mb-2"
+                  ></textarea>
+                  <div class="flex justify-end gap-2">
+                    <button
+                      @click="handleCreateComment(comment.id)"
+                      :disabled="!newComment.trim() || commentSubmitting"
+                      class="px-6 py-2 bg-gray-800 text-white rounded-lg font-medium hover:bg-gray-900 transition-colors disabled:bg-gray-400 disabled:cursor-not-allowed"
+                    >
+                      답글 작성
+                    </button>
+                    <button
+                      @click="cancelReply"
+                      class="px-6 py-2 bg-gray-200 text-gray-700 rounded-lg font-medium hover:bg-gray-300"
+                    >
+                      취소
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Inline Reply Input (if no replies exist) -->
+              <div v-else-if="isAuthenticated && replyingToCommentId === comment.id" class="mt-4 ml-8">
+                <textarea
+                  v-model="newReplyContent"
+                  rows="3"
+                  placeholder="답글을 작성하세요"
+                  class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none mb-2"
+                ></textarea>
+                <div class="flex justify-end gap-2">
+                  <button
+                    @click="handleCreateComment(comment.id)"
+                    :disabled="!newComment.trim() || commentSubmitting"
+                    class="px-6 py-2 bg-gray-800 text-white rounded-lg font-medium hover:bg-gray-900 transition-colors disabled:bg-gray-400 disabled:cursor-not-allowed"
+                  >
+                    답글 작성
+                  </button>
+                  <button
+                    @click="cancelReply"
+                    class="px-6 py-2 bg-gray-200 text-gray-700 rounded-lg font-medium hover:bg-gray-300"
+                  >
+                    취소
+                  </button>
+                </div>
               </div>
             </div>
           </template>
@@ -278,7 +326,7 @@ const editingCommentId = ref<number | null>(null)
 const editingCommentContent = ref('')
 
 const replyingToCommentId = ref<number | null>(null)
-const replyingToNickname = ref<string | null>(null)
+const newReplyContent = ref('')
 
 const isOwner = computed(() => {
   const userId = user.value?.id || user.value?.sub
@@ -339,23 +387,33 @@ async function loadSuggestion() {
   loading.value = false
 }
 
-async function handleCreateComment() {
-  if (!newComment.value.trim() || commentSubmitting.value) return
-
-  commentSubmitting.value = true
-
-  const { error: createError } = await createComment(newComment.value, replyingToCommentId.value)
-
-  if (createError) {
-    alert('댓글 작성에 실패했습니다: ' + createError)
-  } else {
-    newComment.value = ''
-    cancelReply() // Clear reply state after successful comment
-    // After creating a comment, reload all comments to ensure the threaded structure is updated
-    await loadComments()
+async function handleCreateComment(parentId: number | null = null) {
+  let content = '';
+  if (parentId === null) { // This is a top-level comment
+    content = newComment.value;
+  } else { // This is an inline reply
+    content = newReplyContent.value;
   }
 
-  commentSubmitting.value = false
+  if (!content.trim() || commentSubmitting.value) return;
+
+  commentSubmitting.value = true;
+
+  const { error: createError } = await createComment(content, parentId);
+
+  if (createError) {
+    alert('댓글 작성에 실패했습니다: ' + createError);
+  } else {
+    if (parentId === null) { // Clear top-level comment input
+      newComment.value = '';
+    } else { // Clear inline reply input
+      newReplyContent.value = '';
+    }
+    cancelReply(); // Clear reply state (replyingToCommentId) after successful comment
+    await loadComments();
+  }
+
+  commentSubmitting.value = false;
 }
 
 function handleEditComment(comment: any) {
@@ -371,6 +429,7 @@ function cancelEditComment() {
 
 function cancelReply() {
   replyingToCommentId.value = null
+  newReplyContent.value = '' // Clear the reply input content
   replyingToNickname.value = null
 }
 
