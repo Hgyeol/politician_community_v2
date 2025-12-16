@@ -12,16 +12,9 @@
 
           <div class="flex items-center space-x-4">
             <NuxtLink
-              to="/suggestions"
-              class="px-4 py-2 rounded-lg text-gray-700 hover:bg-gray-100 font-medium transition-all"
-            >
-              건의사항 목록
-            </NuxtLink>
-
-            <NuxtLink
               v-if="!isAuthenticated"
               to="/auth/login"
-              class="px-6 py-2 rounded-lg bg-gray-900 text-white font-semibold hover:bg-gray-800 transition-all"
+              class="px-6 py-2 bg-gray-900 text-white font-semibold hover:bg-gray-800 transition-all"
             >
               로그인
             </NuxtLink>
@@ -29,7 +22,7 @@
             <button
               v-else
               @click="handleSignOut"
-              class="px-4 py-2 rounded-lg text-red-600 hover:bg-red-50 font-medium transition-all"
+              class="px-4 py-2 text-red-600 hover:bg-red-50 font-medium transition-all"
             >
               로그아웃
             </button>

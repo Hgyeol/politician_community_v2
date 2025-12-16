@@ -40,7 +40,7 @@
         <div class="mt-6">
           <NuxtLink
             :to="`/politicians/${politician.id}/suggestions`"
-            class="block w-full px-6 py-3 bg-gray-800 text-white text-center rounded-lg font-semibold hover:bg-gray-900 transition-all"
+            class="block w-full px-6 py-3 bg-gray-800 text-white text-center font-semibold hover:bg-gray-900 transition-all"
           >
             건의사항 게시판 →
           </NuxtLink>
@@ -110,7 +110,6 @@ function closeModal() {
   background: white;
   border-left: 1px solid #e5e7eb;
   overflow-y: auto;
-  box-shadow: -2px 0 8px rgba(0, 0, 0, 0.04);
   z-index: 1000;
 }
 
@@ -122,7 +121,6 @@ function closeModal() {
   height: 40px;
   border: none;
   background: #f3f4f6;
-  border-radius: 8px;
   font-size: 24px;
   cursor: pointer;
   display: flex;
@@ -146,9 +144,7 @@ function closeModal() {
   width: 200px;
   height: 240px;
   margin: 0 auto 30px;
-  border-radius: 8px;
   overflow: hidden;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
   border: 1px solid #e5e7eb;
 }
 

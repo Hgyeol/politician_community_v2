@@ -2,12 +2,12 @@
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
     <!-- 로딩 상태 -->
     <div v-if="politicianLoading" class="text-center py-16">
-      <div class="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-gray-800"></div>
+      <div class="inline-block animate-spin h-12 w-12 border-b-2 border-gray-800"></div>
     </div>
 
     <div v-else-if="politician">
       <!-- 정치인 정보 헤더 -->
-      <div class="bg-white border border-gray-200 rounded-lg p-8 mb-8 shadow-sm">
+      <div class="bg-white border border-gray-200 p-8 mb-8">
         <div class="flex items-center justify-between">
           <div>
             <h1 class="text-3xl font-bold text-gray-900 mb-2">{{ politician.의원명 }} 의원 게시판</h1>
@@ -31,14 +31,14 @@
         <NuxtLink
           v-if="isAuthenticated"
           :to="`/suggestions/new?politician_id=${politicianId}`"
-          class="px-6 py-3 bg-gray-800 text-white rounded-lg font-medium hover:bg-gray-900 transition-colors"
+          class="px-6 py-3 bg-gray-800 text-white font-medium hover:bg-gray-900 transition-colors"
         >
           건의사항 작성
         </NuxtLink>
         <NuxtLink
           v-else
           to="/auth/login"
-          class="px-6 py-3 bg-gray-600 text-white rounded-lg font-medium hover:bg-gray-700 transition-colors"
+          class="px-6 py-3 bg-gray-600 text-white font-medium hover:bg-gray-700 transition-colors"
         >
           로그인하여 작성하기
         </NuxtLink>
@@ -49,14 +49,14 @@
         <div
           v-for="suggestion in suggestions"
           :key="suggestion.id"
-          class="bg-white border border-gray-200 rounded-lg p-6 hover:shadow-md transition-shadow cursor-pointer"
+          class="bg-white border border-gray-200 p-6 cursor-pointer"
           @click="navigateToDetail(suggestion.id)"
         >
           <div class="flex justify-between items-start mb-3">
             <h2 class="text-xl font-semibold text-gray-900 flex-1">
               {{ suggestion.title }}
             </h2>
-            <span class="ml-4 px-3 py-1 bg-gray-50 text-gray-700 rounded-full text-sm font-medium">
+            <span class="ml-4 px-3 py-1 bg-gray-50 text-gray-700 text-sm font-medium">
               {{ suggestion.category }}
             </span>
           </div>
@@ -78,14 +78,14 @@
 
         <!-- 로딩 상태 -->
         <div v-if="loading" class="text-center py-8">
-          <div class="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-gray-800"></div>
+          <div class="inline-block animate-spin h-8 w-8 border-b-2 border-gray-800"></div>
         </div>
 
         <!-- 더 보기 -->
         <div v-if="hasMore && !loading" ref="loadMoreTrigger" class="text-center py-8">
           <button
             @click="loadMore({ politician_id: politicianId })"
-            class="px-6 py-3 bg-gray-100 text-gray-700 rounded-lg font-medium hover:bg-gray-200 transition-colors"
+            class="px-6 py-3 bg-gray-100 text-gray-700 font-medium hover:bg-gray-200 transition-colors"
           >
             더 보기
           </button>

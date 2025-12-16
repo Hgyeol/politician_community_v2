@@ -1289,15 +1289,13 @@ body,p,tr {
 .map-wrapper {
     position: relative;
     text-align: center;
-    width: calc(70% - 50px);
-    width: 60%;
+    width: 55%;
     float: left;
     margin: 0;
     padding: 0;
-    border-radius: 10px;
     box-sizing: border-box;
     margin-left: 10px;
-    margin-right: 10px;
+    margin-right: 10px
 }
 
 .map-wrapper .background {
@@ -1324,10 +1322,8 @@ body,p,tr {
     text-align: left;
     filter: drop-shadow(2px 2px 5px rgba(17,17,17,.5019607843));
     padding: .7rem;
-    border-radius: .2rem;
     display: none;
     z-index: 9999;
-    border-radius: 10px;
     padding: 10px;
     -webkit-user-select: none;
     -webkit-user-drag: none;
@@ -1912,14 +1908,12 @@ body,p,tr {
 }
 
 .categ_and_totalrst {
-    width: 15%;
-    width: calc(15% - 10px);
+    width: calc(20% - 10px);
     float: left;
     height: 100%
 }
 
 .total-votes {
-    border-radius: 10px;
     overflow: hidden;
     box-sizing: border-box;
     background-color: #fff;
@@ -1927,7 +1921,7 @@ body,p,tr {
     top: 0;
     left: 0;
     width: 97%;
-    height: 42vh;
+    height: auto;
     border: 1px solid #121212
 }
 
@@ -1940,7 +1934,6 @@ body,p,tr {
     margin-top: 2vh;
     height: calc(100% - 2vh);
     box-sizing: border-box;
-    border-radius: 10px;
     overflow: hidden
 }
 
@@ -1954,7 +1947,7 @@ body,p,tr {
     width: 100%;
     box-sizing: border-box;
     margin-top: 15px;
-    height: 14vh
+    height: auto
 }
 
 .total-votes .total-votes-ctswrap .total-votes-box .total_result_wrap_party_prop .total_result_sgg {

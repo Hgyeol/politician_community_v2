@@ -5,7 +5,7 @@
       <p class="text-gray-600">정치인에게 전달할 건의사항을 작성해주세요</p>
     </div>
 
-    <form @submit.prevent="handleSubmit" class="bg-white border border-gray-200 rounded-lg p-8">
+    <form @submit.prevent="handleSubmit" class="bg-white border border-gray-200 p-8">
       <!-- 정치인 선택 -->
       <div class="mb-6">
         <label class="block text-sm font-semibold text-gray-700 mb-2">
@@ -14,7 +14,7 @@
         <select
           v-model="form.politician_id"
           required
-          class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+          class="w-full px-4 py-3 border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
         >
           <option value="">정치인을 선택하세요</option>
           <option
@@ -35,7 +35,7 @@
         <select
           v-model="form.category"
           required
-          class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+          class="w-full px-4 py-3 border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
         >
           <option value="">카테고리를 선택하세요</option>
           <option value="경제">경제</option>
@@ -60,7 +60,7 @@
           required
           maxlength="100"
           placeholder="건의사항 제목을 입력하세요"
-          class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+          class="w-full px-4 py-3 border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
         />
         <p class="mt-1 text-sm text-gray-500">{{ form.title.length }}/100</p>
       </div>
@@ -76,13 +76,13 @@
           rows="10"
           maxlength="2000"
           placeholder="건의사항 내용을 상세히 작성해주세요"
-          class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none"
+          class="w-full px-4 py-3 border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none"
         ></textarea>
         <p class="mt-1 text-sm text-gray-500">{{ form.content.length }}/2000</p>
       </div>
 
       <!-- 에러 메시지 -->
-      <div v-if="error" class="mb-6 p-4 bg-red-50 border border-red-200 rounded-lg">
+      <div v-if="error" class="mb-6 p-4 bg-red-50 border border-red-200">
         <p class="text-red-700">{{ error }}</p>
       </div>
 
@@ -91,14 +91,14 @@
         <button
           type="submit"
           :disabled="submitting"
-          class="flex-1 px-6 py-3 bg-gray-800 text-white rounded-lg font-semibold hover:bg-gray-900 transition-colors disabled:bg-gray-400 disabled:cursor-not-allowed"
+          class="flex-1 px-6 py-3 bg-gray-800 text-white font-semibold hover:bg-gray-900 transition-colors disabled:bg-gray-400 disabled:cursor-not-allowed"
         >
           {{ submitting ? '작성 중...' : '작성 완료' }}
         </button>
         <button
           type="button"
           @click="router.back()"
-          class="px-6 py-3 bg-gray-200 text-gray-700 rounded-lg font-semibold hover:bg-gray-300 transition-colors"
+          class="px-6 py-3 bg-gray-200 text-gray-700 font-semibold hover:bg-gray-300 transition-colors"
         >
           취소
         </button>
