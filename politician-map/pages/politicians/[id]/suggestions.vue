@@ -9,13 +9,40 @@
       <!-- 정치인 정보 헤더 -->
       <div class="bg-white border border-gray-200 p-8 mb-8">
         <div class="flex items-center justify-between">
-          <div>
-            <h1 class="text-3xl font-bold text-gray-900 mb-2">{{ politician.의원명 }} 의원 게시판</h1>
-            <p class="text-gray-600">{{ politician.지역 }} | {{ politician.정당 }} | {{ politician.소속위원회 }}</p>
+          <!-- Politician Image -->
+          <div class="flex-shrink-0 mx-auto mb-8 w-[200px] h-[240px] overflow-hidden border border-gray-200">
+            <img
+              v-if="!imageFailed"
+              :src="politicianImageSrc"
+              :alt="politician.의원명"
+              class="w-full h-full object-cover"
+              @error="handleImageError"
+            />
+            <div v-else class="w-full h-full bg-gray-200 flex items-center justify-center text-gray-500 text-sm">
+              사진 없음
+            </div>
           </div>
-          <div class="text-right">
-            <p class="text-sm text-gray-500">당선횟수</p>
-            <p class="text-2xl font-bold text-gray-800">{{ politician.당선횟수 }}회</p>
+
+          <div class="flex-1 pl-6">
+            <h2 class="text-3xl font-bold text-gray-900 mb-6">{{ politician.의원명 }} 의원</h2>
+            <div class="space-y-2">
+              <div class="flex py-4">
+                <span class="font-semibold text-gray-600 min-w-[100px] text-base">지역</span>
+                <span class="flex-1 text-gray-800 text-base leading-relaxed">{{ politician.지역 }}</span>
+              </div>
+              <div class="flex py-4">
+                <span class="font-semibold text-gray-600 min-w-[100px] text-base">정당</span>
+                <span class="flex-1 text-gray-800 text-base leading-relaxed">{{ politician.정당 }}</span>
+              </div>
+              <div class="flex py-4">
+                <span class="font-semibold text-gray-600 min-w-[100px] text-base">소속위원회</span>
+                <span class="flex-1 text-gray-800 text-base leading-relaxed">{{ politician.소속위원회 }}</span>
+              </div>
+              <div class="flex py-4">
+                <span class="font-semibold text-gray-600 min-w-[100px] text-base">당선</span>
+                <span class="flex-1 text-gray-800 text-base leading-relaxed">{{ politician.당선횟수 }}<template v-if="politician.당선방법"> ({{ politician.당선방법 }})</template></span>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -119,6 +146,26 @@ const politician = ref(null)
 const politicianLoading = ref(true)
 const loadMoreTrigger = ref(null)
 let observer = null
+
+// Image handling
+const availableImageExtensions = ['jpg', 'png', 'gif', 'jpeg'];
+const currentImageExtensionIndex = ref(0);
+const politicianImageSrc = computed(() => {
+  if (!politician.value) return '';
+  const name = politician.value.의원명;
+  const ext = availableImageExtensions[currentImageExtensionIndex.value];
+  return `/image/${name}.${ext}`;
+});
+const imageFailed = ref(false);
+
+const handleImageError = () => {
+  if (currentImageExtensionIndex.value < availableImageExtensions.length - 1) {
+    currentImageExtensionIndex.value++; // Try next extension
+  } else {
+    imageFailed.value = true; // All extensions tried, set to failed
+  }
+};
+
 
 onMounted(async () => {
   // 정치인 정보 로드
