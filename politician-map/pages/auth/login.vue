@@ -107,9 +107,9 @@ const handleSignIn = async () => {
       return
     }
 
-    // 로그인 성공 - 건의사항 목록으로 이동
+    // 로그인 성공 - 메인페이지로 이동
     console.log('✅ 로그인 성공')
-    router.push('/suggestions')
+    router.push('/')
   } catch (err) {
     error.value = '로그인 중 오류가 발생했습니다.'
     console.error('❌ Exception:', err)

@@ -1,9 +1,43 @@
 <template>
-  <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-    <!-- 로딩 상태 -->
-    <div v-if="loading" class="text-center py-16">
-      <div class="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-gray-800"></div>
-    </div>
+  <div>
+    <!-- 상단 네비게이션 -->
+    <nav class="bg-white border-b border-gray-200 z-50">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex justify-between items-center h-16">
+          <NuxtLink to="/" class="flex items-center space-x-2 group">
+            <div class="text-2xl">🏛️</div>
+            <span class="text-xl font-bold text-gray-900">
+              정치인 커뮤니티
+            </span>
+          </NuxtLink>
+
+          <div class="flex items-center space-x-4">
+            <NuxtLink
+              v-if="!isAuthenticated"
+              to="/auth/login"
+              class="px-6 py-2 bg-gray-900 text-white font-semibold hover:bg-gray-800 transition-all"
+            >
+              로그인
+            </NuxtLink>
+
+            <button
+              v-else
+              @click="handleSignOut"
+              class="px-4 py-2 text-red-600 hover:bg-red-50 font-medium transition-all"
+            >
+              로그아웃
+            </button>
+          </div>
+        </div>
+      </div>
+    </nav>
+
+    <!-- 메인 컨텐츠 -->
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <!-- 로딩 상태 -->
+      <div v-if="loading" class="text-center py-16">
+        <div class="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-gray-800"></div>
+      </div>
 
     <!-- 에러 상태 -->
     <div v-else-if="error" class="text-center py-16">
@@ -273,6 +307,7 @@
         </div>
       </div>
     </div>
+    </div>
   </div>
 </template>
 
@@ -280,13 +315,18 @@
 import { ref, computed, onMounted } from 'vue'
 
 definePageMeta({
-  layout: 'default'
+  layout: false
 })
 
 const route = useRoute()
 const router = useRouter()
-const { user, isAuthenticated } = useAuth()
+const { user, isAuthenticated, signOut } = useAuth()
 const { getSuggestion, deleteSuggestion } = useSuggestions()
+
+const handleSignOut = async () => {
+  await signOut()
+  router.push('/')
+}
 
 const suggestionId = parseInt(route.params.id as string)
 const { comments, loadComments, createComment, updateComment, deleteComment } = useComments(suggestionId)
