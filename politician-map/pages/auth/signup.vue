@@ -6,7 +6,7 @@
         <!-- Logo & Title -->
         <div class="text-center mb-8">
           <h1 class="text-3xl font-bold text-gray-900 mb-2">회원가입</h1>
-          <p class="text-gray-600">정치인 커뮤니티에 가입하세요</p>
+          <p class="text-gray-600">제 22대 국회의원에 가입하세요</p>
         </div>
 
         <!-- Form -->

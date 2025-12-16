@@ -7,7 +7,7 @@
           <NuxtLink to="/" class="flex items-center space-x-2 group">
             <div class="text-2xl">🏛️</div>
             <span class="text-xl font-bold text-gray-900">
-              정치인 커뮤니티
+              제 22대 국회의원
             </span>
           </NuxtLink>
 
@@ -56,7 +56,7 @@
       <div class="mb-6">
         <div class="flex items-center justify-between mb-4">
           <button
-            @click="router.back()"
+            @click="goToList"
             class="text-gray-600 hover:text-gray-900 font-medium"
           >
             ← 목록으로
@@ -454,6 +454,16 @@ function replyToComment(comment: any) {
   replyingToCommentId.value = comment.id
   replyingToNickname.value = getCommentNickname(comment)
   cancelEditComment() // Exit edit mode when replying
+}
+
+function goToList() {
+  // 건의사항의 정치인 ID로 해당 정치인의 건의사항 목록 페이지로 이동
+  if (suggestion.value && suggestion.value.politician_id) {
+    router.push(`/politicians/${suggestion.value.politician_id}/suggestions`)
+  } else {
+    // politician_id가 없으면 뒤로 가기
+    router.back()
+  }
 }
 
 async function handleEdit() {

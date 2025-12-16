@@ -8,7 +8,7 @@
             <NuxtLink to="/" class="flex items-center space-x-2 group">
               <div class="text-2xl">🏛️</div>
               <span class="text-xl font-bold text-gray-900">
-                정치인 커뮤니티
+                제 22대 국회의원
               </span>
             </NuxtLink>
 
