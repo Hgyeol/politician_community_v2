@@ -649,10 +649,10 @@ const _inlineRuntimeConfig = {
   },
   "public": {
     "supabaseUrl": "https://eylccqdtjyxnhpnnerff.supabase.co",
-    "supabaseKey": "sb_secret_mNkhN 0XHn0WT0hZey2-TYw_gSbnHpE7",
+    "supabaseKey": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImV5bGNjcWR0anl4bmhwbm5lcmZmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjU3ODkxOTgsImV4cCI6MjA4MTM2NTE5OH0.U28jjomVRVKITQUZQsPrGsNxPKAYbGLsWqPHRowKg9g",
     "supabase": {
       "url": "https://eylccqdtjyxnhpnnerff.supabase.co",
-      "key": "sb_secret_mNkhN 0XHn0WT0hZey2-TYw_gSbnHpE7",
+      "key": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImV5bGNjcWR0anl4bmhwbm5lcmZmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjU3ODkxOTgsImV4cCI6MjA4MTM2NTE5OH0.U28jjomVRVKITQUZQsPrGsNxPKAYbGLsWqPHRowKg9g",
       "redirect": false,
       "redirectOptions": {
         "login": "/auth/login",

@@ -5,6 +5,8 @@ export function useAuth() {
   // 회원가입
   const signUp = async (email: string, password: string, nickname: string, region: string = '') => {
     try {
+      console.log('🔧 useAuth.signUp() 호출:', { email, nickname, region })
+
       const { data, error } = await supabase.auth.signUp({
         email,
         password,
@@ -16,10 +18,12 @@ export function useAuth() {
         }
       })
 
+      console.log('🔧 Supabase signUp 결과:', { data, error })
+
       if (error) throw error
       return { data, error: null }
     } catch (error: any) {
-      console.error('Sign up error:', error)
+      console.error('❌ Sign up error:', error)
       return { data: null, error: error.message }
     }
   }
@@ -27,15 +31,23 @@ export function useAuth() {
   // 로그인
   const signIn = async (email: string, password: string) => {
     try {
+      console.log('🔧 useAuth.signIn() 호출:', { email })
+
       const { data, error } = await supabase.auth.signInWithPassword({
         email,
         password
       })
 
+      console.log('🔧 Supabase signInWithPassword 결과:', {
+        user: data?.user?.email,
+        session: !!data?.session,
+        error
+      })
+
       if (error) throw error
       return { data, error: null }
     } catch (error: any) {
-      console.error('Sign in error:', error)
+      console.error('❌ Sign in error:', error)
       return { data: null, error: error.message }
     }
   }

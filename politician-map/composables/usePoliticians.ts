@@ -18,7 +18,9 @@ export function usePoliticians() {
       const data = []
       for (let i = 1; i < lines.length; i++) {
         const values = parseCSVLine(lines[i])
-        const obj: any = {}
+        const obj: any = {
+          id: i // CSV 행 번호를 id로 사용
+        }
 
         headers.forEach((header, index) => {
           obj[header] = values[index] || ''
@@ -28,6 +30,7 @@ export function usePoliticians() {
       }
 
       politicians.value = data
+      console.log('Loaded politicians:', data.slice(0, 3)) // 디버깅용
     } catch (err) {
       error.value = '의원 데이터를 불러오는데 실패했습니다.'
       console.error('Failed to load politicians:', err)

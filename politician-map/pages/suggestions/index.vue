@@ -1,231 +1,155 @@
 <template>
-  <div class="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 py-8">
-    <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
-      <!-- 헤더 -->
-      <div class="bg-white rounded-2xl shadow-lg p-6 mb-8">
-        <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
-          <div>
-            <h1 class="text-3xl font-bold bg-gradient-to-r from-primary-500 to-secondary-500 bg-clip-text text-transparent mb-2">
-              건의사항 목록
-            </h1>
-            <p class="text-gray-600">정치인에게 직접 건의하고 소통하세요</p>
-          </div>
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <div class="mb-8">
+      <h1 class="text-3xl font-bold text-gray-900 mb-2">전체 건의사항</h1>
+      <p class="text-gray-600">모든 정치인에게 전달된 건의사항을 확인하세요</p>
+    </div>
 
-          <NuxtLink
-            v-if="isAuthenticated"
-            to="/suggestions/new"
-            class="flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-primary-500 to-secondary-500 text-white rounded-xl font-semibold hover:shadow-lg hover:-translate-y-0.5 transition-all whitespace-nowrap"
-          >
-            <span class="text-xl">✍️</span>
-            건의사항 작성
-          </NuxtLink>
-          <NuxtLink
-            v-else
-            to="/auth/login"
-            class="flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-primary-500 to-secondary-500 text-white rounded-xl font-semibold hover:shadow-lg hover:-translate-y-0.5 transition-all whitespace-nowrap"
-          >
-            <span class="text-xl">🔐</span>
-            로그인하여 작성하기
-          </NuxtLink>
+    <!-- 작성 버튼 -->
+    <div class="mb-6 flex justify-end">
+      <NuxtLink
+        v-if="isAuthenticated"
+        to="/suggestions/new"
+        class="px-6 py-3 bg-gray-800 text-white rounded-lg font-medium hover:bg-gray-900 transition-colors"
+      >
+        건의사항 작성
+      </NuxtLink>
+      <NuxtLink
+        v-else
+        to="/auth/login"
+        class="px-6 py-3 bg-gray-600 text-white rounded-lg font-medium hover:bg-gray-700 transition-colors"
+      >
+        로그인하여 작성하기
+      </NuxtLink>
+    </div>
+
+    <!-- 건의사항 목록 -->
+    <div class="space-y-4">
+      <div
+        v-for="suggestion in suggestions"
+        :key="suggestion.id"
+        class="bg-white border border-gray-200 rounded-lg p-6 hover:shadow-md transition-shadow cursor-pointer"
+        @click="navigateToDetail(suggestion.id)"
+      >
+        <div class="flex justify-between items-start mb-3">
+          <h2 class="text-xl font-semibold text-gray-900 flex-1">
+            {{ suggestion.title }}
+          </h2>
+          <span class="ml-4 px-3 py-1 bg-gray-50 text-gray-700 rounded-full text-sm font-medium">
+            {{ suggestion.category }}
+          </span>
         </div>
 
-        <!-- 필터 -->
-        <div class="mt-6 pt-6 border-t border-gray-200">
-          <div class="flex items-center gap-2">
-            <span class="text-sm font-semibold text-gray-700">카테고리:</span>
-            <select
-              v-model="selectedCategory"
-              @change="handleFilterChange"
-              class="px-4 py-2 border-2 border-gray-200 rounded-lg focus:outline-none focus:border-primary-500 transition-colors cursor-pointer"
-            >
-              <option value="">전체 카테고리</option>
-              <option value="정책">📋 정책</option>
-              <option value="민원">📢 민원</option>
-              <option value="기타">💬 기타</option>
-            </select>
+        <p class="text-gray-600 mb-4 line-clamp-2">
+          {{ suggestion.content }}
+        </p>
+
+        <div class="flex items-center justify-between text-sm text-gray-500">
+          <div class="flex items-center space-x-4">
+            <span class="font-medium">{{ suggestion.profiles?.nickname || '익명' }}</span>
+            <span>→</span>
+            <span class="font-medium text-gray-800">{{ suggestion.politicians?.name }}</span>
+            <span>({{ suggestion.politicians?.region }})</span>
           </div>
-        </div>
-      </div>
-
-      <!-- 건의사항 목록 -->
-      <div class="space-y-4">
-        <div
-          v-for="suggestion in suggestions"
-          :key="suggestion.id"
-          @click="navigateTo(`/suggestions/${suggestion.id}`)"
-          class="bg-white rounded-xl shadow hover:shadow-xl transition-all cursor-pointer border-2 border-transparent hover:border-primary-300 group"
-        >
-          <div class="p-6">
-            <!-- 헤더 -->
-            <div class="flex justify-between items-start mb-3 gap-4">
-              <h2 class="text-xl font-bold text-gray-900 group-hover:text-primary-600 transition-colors flex-1">
-                {{ suggestion.title }}
-              </h2>
-              <span
-                class="px-3 py-1 rounded-full text-sm font-semibold whitespace-nowrap"
-                :class="getCategoryStyle(suggestion.category)"
-              >
-                {{ getCategoryIcon(suggestion.category) }} {{ suggestion.category }}
-              </span>
-            </div>
-
-            <!-- 내용 -->
-            <p class="text-gray-600 mb-4 line-clamp-2">
-              {{ truncateText(suggestion.content, 150) }}
-            </p>
-
-            <!-- 메타 정보 -->
-            <div class="flex flex-wrap items-center justify-between gap-3 text-sm text-gray-500">
-              <div class="flex flex-wrap items-center gap-4">
-                <span class="flex items-center gap-1">
-                  <span class="text-base">👤</span>
-                  <span class="font-medium">{{ suggestion.profiles?.nickname || '익명' }}</span>
-                </span>
-                <span class="flex items-center gap-1">
-                  <span class="text-base">→</span>
-                  <span class="font-medium text-primary-600">{{ suggestion.politicians?.name }}</span>
-                  <span class="text-xs text-gray-400">({{ suggestion.politicians?.region }})</span>
-                </span>
-              </div>
-              <div class="flex items-center gap-4">
-                <span class="flex items-center gap-1">
-                  <span class="text-base">👁</span>
-                  <span>{{ suggestion.view_count }}</span>
-                </span>
-                <span class="text-gray-400">{{ formatDate(suggestion.created_at) }}</span>
-              </div>
-            </div>
+          <div class="flex items-center space-x-4">
+            <span>조회 {{ suggestion.view_count || 0 }}</span>
+            <span>{{ formatDate(suggestion.created_at) }}</span>
           </div>
         </div>
       </div>
-
-      <!-- 무한 스크롤 감지 영역 -->
-      <div ref="sentinel" class="h-4"></div>
 
       <!-- 로딩 상태 -->
-      <div v-if="loading" class="flex flex-col items-center justify-center py-12">
-        <div class="w-12 h-12 border-4 border-gray-200 border-t-primary-500 rounded-full animate-spin mb-4"></div>
-        <p class="text-gray-600 font-medium">로딩 중...</p>
+      <div v-if="loading" class="text-center py-8">
+        <div class="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-gray-800"></div>
       </div>
 
-      <!-- 모든 데이터 로드 완료 -->
-      <div v-if="!hasMore && suggestions.length > 0" class="text-center py-12">
-        <div class="text-4xl mb-3">📚</div>
-        <p class="text-gray-500 font-medium">모든 게시글을 불러왔습니다.</p>
-      </div>
-
-      <!-- 데이터 없음 -->
-      <div v-if="!loading && suggestions.length === 0" class="bg-white rounded-2xl shadow-lg p-12 text-center">
-        <div class="text-6xl mb-4">📝</div>
-        <p class="text-xl text-gray-700 font-semibold mb-2">아직 건의사항이 없습니다</p>
-        <p class="text-gray-500 mb-6">첫 번째로 의견을 남겨보세요!</p>
-        <NuxtLink
-          v-if="isAuthenticated"
-          to="/suggestions/new"
-          class="inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-primary-500 to-secondary-500 text-white rounded-xl font-semibold hover:shadow-lg hover:-translate-y-0.5 transition-all"
+      <!-- 더 보기 -->
+      <div v-if="hasMore && !loading" ref="loadMoreTrigger" class="text-center py-8">
+        <button
+          @click="loadMore()"
+          class="px-6 py-3 bg-gray-100 text-gray-700 rounded-lg font-medium hover:bg-gray-200 transition-colors"
         >
-          <span class="text-xl">✍️</span>
-          첫 번째 건의사항 작성하기
-        </NuxtLink>
+          더 보기
+        </button>
       </div>
 
-      <!-- 메인으로 돌아가기 -->
-      <div class="text-center mt-8">
-        <NuxtLink
-          to="/"
-          class="inline-flex items-center gap-2 px-6 py-3 bg-white text-primary-600 border-2 border-primary-600 rounded-xl font-semibold hover:bg-primary-600 hover:text-white transition-all"
-        >
-          <span>🗺️</span>
-          지도로 돌아가기
-        </NuxtLink>
+      <!-- 빈 상태 -->
+      <div v-if="!loading && suggestions.length === 0" class="text-center py-16">
+        <p class="text-gray-500 text-lg">아직 작성된 건의사항이 없습니다</p>
       </div>
     </div>
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
+import { ref, onMounted, onUnmounted } from 'vue'
+
+definePageMeta({
+  layout: 'default'
+})
+
 const { suggestions, hasMore, loading, loadMore, reset } = useSuggestions()
 const { isAuthenticated } = useAuth()
+const router = useRouter()
 
-const sentinel = ref(null)
-const selectedCategory = ref('')
+const loadMoreTrigger = ref(null)
+let observer = null
 
-// 초기 데이터 로드
 onMounted(async () => {
+  // 초기 데이터 로드
   await loadMore()
 
-  // Intersection Observer를 사용한 무한 스크롤
-  const observer = new IntersectionObserver(
-    (entries) => {
-      if (entries[0].isIntersecting) {
-        loadMore({ category: selectedCategory.value })
-      }
-    },
-    {
-      threshold: 0.1,
-      rootMargin: '100px'
+  // Intersection Observer 설정 (무한 스크롤)
+  if (typeof IntersectionObserver !== 'undefined') {
+    observer = new IntersectionObserver(
+      (entries) => {
+        if (entries[0].isIntersecting && hasMore.value && !loading.value) {
+          loadMore()
+        }
+      },
+      { threshold: 0.1 }
+    )
+
+    if (loadMoreTrigger.value) {
+      observer.observe(loadMoreTrigger.value)
     }
-  )
-
-  if (sentinel.value) {
-    observer.observe(sentinel.value)
   }
+})
 
-  onUnmounted(() => {
+onUnmounted(() => {
+  if (observer) {
     observer.disconnect()
-  })
-})
-
-// 필터 변경 시
-const handleFilterChange = () => {
+  }
   reset()
-  loadMore({ category: selectedCategory.value })
-}
-
-// 카테고리 스타일
-const getCategoryStyle = (category) => {
-  const styles = {
-    '정책': 'bg-blue-100 text-blue-700',
-    '민원': 'bg-orange-100 text-orange-700',
-    '기타': 'bg-gray-100 text-gray-700'
-  }
-  return styles[category] || 'bg-gray-100 text-gray-700'
-}
-
-// 카테고리 아이콘
-const getCategoryIcon = (category) => {
-  const icons = {
-    '정책': '📋',
-    '민원': '📢',
-    '기타': '💬'
-  }
-  return icons[category] || '💬'
-}
-
-// 텍스트 자르기
-const truncateText = (text, maxLength) => {
-  if (!text) return ''
-  return text.length > maxLength ? text.substring(0, maxLength) + '...' : text
-}
-
-// 날짜 포맷
-const formatDate = (date) => {
-  if (!date) return ''
-  const d = new Date(date)
-  const now = new Date()
-  const diff = now - d
-  const seconds = Math.floor(diff / 1000)
-  const minutes = Math.floor(seconds / 60)
-  const hours = Math.floor(minutes / 60)
-  const days = Math.floor(hours / 24)
-
-  if (days > 0) return `${days}일 전`
-  if (hours > 0) return `${hours}시간 전`
-  if (minutes > 0) return `${minutes}분 전`
-  return '방금 전'
-}
-
-useHead({
-  title: '건의사항 목록 - 정치인 커뮤니티'
 })
+
+function navigateToDetail(id: number) {
+  router.push(`/suggestions/${id}`)
+}
+
+function formatDate(dateString: string) {
+  const date = new Date(dateString)
+  const now = new Date()
+  const diffInSeconds = Math.floor((now.getTime() - date.getTime()) / 1000)
+
+  if (diffInSeconds < 60) return '방금 전'
+  if (diffInSeconds < 3600) return `${Math.floor(diffInSeconds / 60)}분 전`
+  if (diffInSeconds < 86400) return `${Math.floor(diffInSeconds / 3600)}시간 전`
+  if (diffInSeconds < 604800) return `${Math.floor(diffInSeconds / 86400)}일 전`
+
+  return date.toLocaleDateString('ko-KR', {
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric'
+  })
+}
 </script>
+
+<style scoped>
+.line-clamp-2 {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+</style>

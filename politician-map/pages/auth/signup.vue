@@ -1,11 +1,10 @@
 <template>
-  <div class="min-h-screen flex items-center justify-center bg-gradient-to-br from-primary-500 via-primary-600 to-secondary-500 p-4">
+  <div class="min-h-screen flex items-center justify-center bg-gray-50 p-4">
     <div class="w-full max-w-md">
       <!-- Card -->
       <div class="bg-white rounded-2xl shadow-2xl p-8">
         <!-- Logo & Title -->
         <div class="text-center mb-8">
-          <div class="text-5xl mb-4">🏛️</div>
           <h1 class="text-3xl font-bold text-gray-900 mb-2">회원가입</h1>
           <p class="text-gray-600">정치인 커뮤니티에 가입하세요</p>
         </div>
@@ -89,7 +88,7 @@
           <button
             type="submit"
             :disabled="loading"
-            class="w-full bg-gradient-to-r from-primary-500 to-secondary-500 text-white py-3 rounded-lg font-semibold hover:shadow-lg hover:-translate-y-0.5 transition-all disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:translate-y-0"
+            class="w-full bg-gray-800 text-white py-3 rounded-lg font-semibold hover:bg-gray-900 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
           >
             {{ loading ? '처리 중...' : '회원가입' }}
           </button>
@@ -99,7 +98,7 @@
         <div class="mt-6 space-y-3 text-center text-sm">
           <p class="text-gray-600">
             이미 계정이 있으신가요?
-            <NuxtLink to="/auth/login" class="text-primary-600 hover:text-primary-700 font-semibold">
+            <NuxtLink to="/auth/login" class="text-gray-800 hover:text-gray-900 font-semibold">
               로그인
             </NuxtLink>
           </p>
@@ -145,6 +144,12 @@ const handleSignUp = async () => {
   loading.value = true
 
   try {
+    console.log('📝 회원가입 시도:', {
+      email: form.value.email,
+      nickname: form.value.nickname,
+      region: form.value.region
+    })
+
     const { data, error: signUpError } = await signUp(
       form.value.email,
       form.value.password,
@@ -152,17 +157,21 @@ const handleSignUp = async () => {
       form.value.region
     )
 
+    console.log('📝 회원가입 응답:', { data, error: signUpError })
+
     if (signUpError) {
-      error.value = signUpError
+      error.value = `회원가입 실패: ${signUpError}`
+      console.error('❌ 회원가입 에러:', signUpError)
       return
     }
 
     // 회원가입 성공
+    console.log('✅ 회원가입 성공')
     alert('회원가입이 완료되었습니다! 로그인해주세요.')
     router.push('/auth/login')
   } catch (err) {
     error.value = '회원가입 중 오류가 발생했습니다.'
-    console.error(err)
+    console.error('❌ Exception:', err)
   } finally {
     loading.value = false
   }

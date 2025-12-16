@@ -35,6 +35,16 @@
             <span class="value">{{ politician.당선횟수 }}<template v-if="politician.당선방법"> ({{ politician.당선방법 }})</template></span>
           </div>
         </div>
+
+        <!-- 게시판 이동 버튼 -->
+        <div class="mt-6">
+          <NuxtLink
+            :to="`/politicians/${politician.id}/suggestions`"
+            class="block w-full px-6 py-3 bg-gray-800 text-white text-center rounded-lg font-semibold hover:bg-gray-900 transition-all"
+          >
+            건의사항 게시판 →
+          </NuxtLink>
+        </div>
       </div>
 
       <div v-else class="panel-content">

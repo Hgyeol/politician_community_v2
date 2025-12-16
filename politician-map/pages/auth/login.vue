@@ -1,11 +1,10 @@
 <template>
-  <div class="min-h-screen flex items-center justify-center bg-gradient-to-br from-primary-500 via-primary-600 to-secondary-500 p-4">
+  <div class="min-h-screen flex items-center justify-center bg-gray-50 p-4">
     <div class="w-full max-w-md">
       <!-- Card -->
       <div class="bg-white rounded-2xl shadow-2xl p-8">
         <!-- Logo & Title -->
         <div class="text-center mb-8">
-          <div class="text-5xl mb-4">🏛️</div>
           <h1 class="text-3xl font-bold text-gray-900 mb-2">로그인</h1>
           <p class="text-gray-600">정치인 커뮤니티에 오신 것을 환영합니다</p>
         </div>
@@ -47,7 +46,7 @@
           <button
             type="submit"
             :disabled="loading"
-            class="w-full bg-gradient-to-r from-primary-500 to-secondary-500 text-white py-3 rounded-lg font-semibold hover:shadow-lg hover:-translate-y-0.5 transition-all disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:translate-y-0"
+            class="w-full bg-gray-800 text-white py-3 rounded-lg font-semibold hover:bg-gray-900 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
           >
             {{ loading ? '로그인 중...' : '로그인' }}
           </button>
@@ -57,7 +56,7 @@
         <div class="mt-6 space-y-3 text-center text-sm">
           <p class="text-gray-600">
             계정이 없으신가요?
-            <NuxtLink to="/auth/signup" class="text-primary-600 hover:text-primary-700 font-semibold">
+            <NuxtLink to="/auth/signup" class="text-gray-800 hover:text-gray-900 font-semibold">
               회원가입
             </NuxtLink>
           </p>
@@ -93,21 +92,27 @@ const handleSignIn = async () => {
   loading.value = true
 
   try {
+    console.log('🔐 로그인 시도:', form.value.email)
+
     const { data, error: signInError } = await signIn(
       form.value.email,
       form.value.password
     )
 
+    console.log('📝 로그인 응답:', { data, error: signInError })
+
     if (signInError) {
-      error.value = '이메일 또는 비밀번호가 올바르지 않습니다.'
+      error.value = `로그인 실패: ${signInError}`
+      console.error('❌ 로그인 에러:', signInError)
       return
     }
 
     // 로그인 성공 - 건의사항 목록으로 이동
+    console.log('✅ 로그인 성공')
     router.push('/suggestions')
   } catch (err) {
     error.value = '로그인 중 오류가 발생했습니다.'
-    console.error(err)
+    console.error('❌ Exception:', err)
   } finally {
     loading.value = false
   }

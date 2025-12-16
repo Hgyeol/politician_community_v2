@@ -6,7 +6,11 @@
       "Bash(source .venv/bin/activate)",
       "Bash(python check_image_quality.py:*)",
       "Bash(npx nuxi@latest init:*)",
-      "Bash(npm install:*)"
+      "Bash(npm install:*)",
+      "Bash(rm:*)",
+      "Bash(grep:*)",
+      "Bash(find:*)",
+      "Bash({} ;)"
     ]
   }
 }

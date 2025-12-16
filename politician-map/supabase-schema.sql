@@ -30,7 +30,7 @@ CREATE TABLE IF NOT EXISTS suggestions (
   id BIGSERIAL PRIMARY KEY,
   title TEXT NOT NULL,
   content TEXT NOT NULL,
-  category TEXT CHECK (category IN ('정책', '민원', '기타')) NOT NULL,
+  category TEXT CHECK (category IN ('경제', '교육', '환경', '복지', '안전', '교통', '문화', '기타')) NOT NULL,
   politician_id BIGINT REFERENCES politicians(id) ON DELETE SET NULL,
   user_id UUID REFERENCES auth.users(id) ON DELETE CASCADE NOT NULL,
   view_count INTEGER DEFAULT 0,
@@ -208,6 +208,20 @@ $$ LANGUAGE plpgsql SECURITY DEFINER;
 -- VALUES
 --   ('홍길동', '서울 종로구', '더불어민주당', '국토교통위원회', '3선', '지역구', '남', '제22대'),
 --   ('김철수', '부산 해운대구을', '국민의힘', '정무위원회', '재선', '지역구', '남', '제22대');
+
+-- ====================================
+-- 대댓글 기능 추가 (2025-12-16)
+-- ====================================
+
+-- comments 테이블에 parent_id 추가
+ALTER TABLE public.comments
+  ADD COLUMN parent_id BIGINT REFERENCES public.comments(id) ON DELETE CASCADE;
+
+-- 대댓글 조회를 위한 인덱스 추가
+CREATE INDEX IF NOT EXISTS idx_comments_parent ON public.comments (parent_id);
+
+-- comments 테이블 RLS 정책은 현재 모든 댓글을 읽을 수 있도록 허용하고 있으므로,
+-- 대댓글 조회에도 문제가 없습니다. 만약 특정 조건으로 제한하려면 RLS 정책 수정이 필요합니다.
 
 -- ====================================
 -- 완료 메시지

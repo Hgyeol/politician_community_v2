@@ -1,123 +1,124 @@
 <template>
-  <div class="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 py-8">
-    <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
-      <div class="bg-white rounded-2xl shadow-xl p-8">
-        <h1 class="text-3xl font-bold bg-gradient-to-r from-primary-500 to-secondary-500 bg-clip-text text-transparent mb-8">
-          건의사항 작성
-        </h1>
-
-        <form @submit.prevent="handleSubmit" class="space-y-6">
-          <!-- 정치인 선택 -->
-          <div>
-            <label for="politician" class="block text-sm font-semibold text-gray-700 mb-2">
-              정치인 선택 <span class="text-red-500">*</span>
-            </label>
-            <select
-              id="politician"
-              v-model="form.politician_id"
-              required
-              class="w-full px-4 py-3 border-2 border-gray-200 rounded-lg focus:outline-none focus:border-primary-500 transition-colors"
-            >
-              <option value="">정치인을 선택하세요</option>
-              <option
-                v-for="politician in politicians"
-                :key="politician.id"
-                :value="politician.id"
-              >
-                {{ politician.name }} ({{ politician.region }})
-              </option>
-            </select>
-          </div>
-
-          <!-- 카테고리 -->
-          <div>
-            <label for="category" class="block text-sm font-semibold text-gray-700 mb-2">
-              카테고리 <span class="text-red-500">*</span>
-            </label>
-            <select
-              id="category"
-              v-model="form.category"
-              required
-              class="w-full px-4 py-3 border-2 border-gray-200 rounded-lg focus:outline-none focus:border-primary-500 transition-colors"
-            >
-              <option value="">카테고리를 선택하세요</option>
-              <option value="정책">📋 정책</option>
-              <option value="민원">📢 민원</option>
-              <option value="기타">💬 기타</option>
-            </select>
-          </div>
-
-          <!-- 제목 -->
-          <div>
-            <label for="title" class="block text-sm font-semibold text-gray-700 mb-2">
-              제목 <span class="text-red-500">*</span>
-            </label>
-            <input
-              id="title"
-              v-model="form.title"
-              type="text"
-              required
-              placeholder="건의사항 제목을 입력하세요"
-              maxlength="100"
-              class="w-full px-4 py-3 border-2 border-gray-200 rounded-lg focus:outline-none focus:border-primary-500 transition-colors"
-            />
-            <p class="text-right text-sm text-gray-400 mt-1">{{ form.title.length }} / 100</p>
-          </div>
-
-          <!-- 내용 -->
-          <div>
-            <label for="content" class="block text-sm font-semibold text-gray-700 mb-2">
-              내용 <span class="text-red-500">*</span>
-            </label>
-            <textarea
-              id="content"
-              v-model="form.content"
-              required
-              placeholder="건의사항 내용을 자세히 작성해주세요"
-              rows="12"
-              maxlength="2000"
-              class="w-full px-4 py-3 border-2 border-gray-200 rounded-lg focus:outline-none focus:border-primary-500 transition-colors resize-y"
-            ></textarea>
-            <p class="text-right text-sm text-gray-400 mt-1">{{ form.content.length }} / 2000</p>
-          </div>
-
-          <!-- 에러 메시지 -->
-          <div v-if="error" class="bg-red-50 border-2 border-red-200 text-red-800 px-4 py-3 rounded-lg text-sm">
-            {{ error }}
-          </div>
-
-          <!-- 버튼 -->
-          <div class="flex flex-col-reverse sm:flex-row gap-3 pt-4">
-            <button
-              type="button"
-              @click="router.back()"
-              class="w-full sm:w-auto px-6 py-3 bg-white text-gray-700 border-2 border-gray-300 rounded-lg font-semibold hover:bg-gray-50 transition-all"
-            >
-              취소
-            </button>
-            <button
-              type="submit"
-              :disabled="loading"
-              class="w-full sm:w-auto px-8 py-3 bg-gradient-to-r from-primary-500 to-secondary-500 text-white rounded-lg font-semibold hover:shadow-lg hover:-translate-y-0.5 transition-all disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:translate-y-0"
-            >
-              {{ loading ? '작성 중...' : '작성 완료' }}
-            </button>
-          </div>
-        </form>
-      </div>
+  <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <div class="mb-8">
+      <h1 class="text-3xl font-bold text-gray-900 mb-2">건의사항 작성</h1>
+      <p class="text-gray-600">정치인에게 전달할 건의사항을 작성해주세요</p>
     </div>
+
+    <form @submit.prevent="handleSubmit" class="bg-white border border-gray-200 rounded-lg p-8">
+      <!-- 정치인 선택 -->
+      <div class="mb-6">
+        <label class="block text-sm font-semibold text-gray-700 mb-2">
+          정치인 선택 *
+        </label>
+        <select
+          v-model="form.politician_id"
+          required
+          class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+        >
+          <option value="">정치인을 선택하세요</option>
+          <option
+            v-for="politician in politicians"
+            :key="politician.id"
+            :value="politician.id"
+          >
+            {{ politician.의원명 }} ({{ politician.지역 }}, {{ politician.정당 }})
+          </option>
+        </select>
+      </div>
+
+      <!-- 카테고리 -->
+      <div class="mb-6">
+        <label class="block text-sm font-semibold text-gray-700 mb-2">
+          카테고리 *
+        </label>
+        <select
+          v-model="form.category"
+          required
+          class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+        >
+          <option value="">카테고리를 선택하세요</option>
+          <option value="경제">경제</option>
+          <option value="교육">교육</option>
+          <option value="환경">환경</option>
+          <option value="복지">복지</option>
+          <option value="안전">안전</option>
+          <option value="교통">교통</option>
+          <option value="문화">문화</option>
+          <option value="기타">기타</option>
+        </select>
+      </div>
+
+      <!-- 제목 -->
+      <div class="mb-6">
+        <label class="block text-sm font-semibold text-gray-700 mb-2">
+          제목 *
+        </label>
+        <input
+          v-model="form.title"
+          type="text"
+          required
+          maxlength="100"
+          placeholder="건의사항 제목을 입력하세요"
+          class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+        />
+        <p class="mt-1 text-sm text-gray-500">{{ form.title.length }}/100</p>
+      </div>
+
+      <!-- 내용 -->
+      <div class="mb-6">
+        <label class="block text-sm font-semibold text-gray-700 mb-2">
+          내용 *
+        </label>
+        <textarea
+          v-model="form.content"
+          required
+          rows="10"
+          maxlength="2000"
+          placeholder="건의사항 내용을 상세히 작성해주세요"
+          class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none"
+        ></textarea>
+        <p class="mt-1 text-sm text-gray-500">{{ form.content.length }}/2000</p>
+      </div>
+
+      <!-- 에러 메시지 -->
+      <div v-if="error" class="mb-6 p-4 bg-red-50 border border-red-200 rounded-lg">
+        <p class="text-red-700">{{ error }}</p>
+      </div>
+
+      <!-- 버튼 -->
+      <div class="flex gap-4">
+        <button
+          type="submit"
+          :disabled="submitting"
+          class="flex-1 px-6 py-3 bg-gray-800 text-white rounded-lg font-semibold hover:bg-gray-900 transition-colors disabled:bg-gray-400 disabled:cursor-not-allowed"
+        >
+          {{ submitting ? '작성 중...' : '작성 완료' }}
+        </button>
+        <button
+          type="button"
+          @click="router.back()"
+          class="px-6 py-3 bg-gray-200 text-gray-700 rounded-lg font-semibold hover:bg-gray-300 transition-colors"
+        >
+          취소
+        </button>
+      </div>
+    </form>
   </div>
 </template>
 
-<script setup>
-const { createSuggestion } = useSuggestions()
-const { user, isAuthenticated } = useAuth()
-const router = useRouter()
+<script setup lang="ts">
+import { ref, onMounted } from 'vue'
 
-// 로그인 체크
-if (!isAuthenticated.value) {
-  router.push('/auth/login')
-}
+definePageMeta({
+  middleware: 'auth',
+  layout: 'default'
+})
+
+const router = useRouter()
+const route = useRoute()
+const { politicians, loadPoliticians } = usePoliticians()
+const { createSuggestion } = useSuggestions()
 
 const form = ref({
   politician_id: '',
@@ -126,29 +127,24 @@ const form = ref({
   content: ''
 })
 
-const loading = ref(false)
+const submitting = ref(false)
 const error = ref('')
 
-// 정치인 목록 로드
-const politicians = ref([])
-const supabase = useSupabaseClient()
-
 onMounted(async () => {
-  try {
-    const { data } = await supabase
-      .from('politicians')
-      .select('id, name, region')
-      .order('name', { ascending: true })
+  await loadPoliticians()
 
-    politicians.value = data || []
-  } catch (err) {
-    console.error('Failed to load politicians:', err)
+  // URL 파라미터로 politician_id가 있으면 자동 선택
+  const politicianIdParam = route.query.politician_id
+  if (politicianIdParam) {
+    form.value.politician_id = politicianIdParam as string
   }
 })
 
-const handleSubmit = async () => {
+async function handleSubmit() {
+  if (submitting.value) return
+
   error.value = ''
-  loading.value = true
+  submitting.value = true
 
   try {
     const { data, error: submitError } = await createSuggestion({
@@ -163,18 +159,14 @@ const handleSubmit = async () => {
       return
     }
 
-    // 작성 성공 - 상세 페이지로 이동
-    alert('건의사항이 작성되었습니다!')
-    router.push(`/suggestions/${data.id}`)
-  } catch (err) {
-    error.value = '건의사항 작성 중 오류가 발생했습니다.'
-    console.error(err)
+    if (data) {
+      // 성공 시 상세 페이지로 이동
+      router.push(`/suggestions/${data.id}`)
+    }
+  } catch (err: any) {
+    error.value = err.message || '건의사항 작성 중 오류가 발생했습니다'
   } finally {
-    loading.value = false
+    submitting.value = false
   }
 }
-
-useHead({
-  title: '건의사항 작성 - 정치인 커뮤니티'
-})
 </script>
