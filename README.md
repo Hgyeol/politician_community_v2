@@ -1,6 +1,6 @@
 # 정치인 커뮤니티 
 
-> **배포 URL**: (https://api.paletto.site/))
+> **배포 URL**: ([https://politician-community-v2.vercel.app](https://politician-community-v2.vercel.app/)))
 
 ## 📌 프로젝트 소개
 
@@ -57,7 +57,7 @@
 ### Tooling & Infra
 - TypeScript 지원 Nuxt 설정
 - Vite 번들링, pnpm/npm 호환
-- 배포 대상: Vercel/Netlify (현재 로컬 개발 환경)
+- 배포 대상: Vercel/Netlify 
 
 ---
 
